@@ -1,13 +1,16 @@
 class Persona {
 	var property fuerza = 0
-	var property resistencia = 0
+	var property resistencia = 1
 	var property bando //puede ser "galo" o "romano"
 	var property estaVivo = true
+	
+	method sumarResistencia(cantidad) { resistencia += cantidad }
+	method sumarFuerza(cantidad) { fuerza += cantidad }
 	
 	method poder() = fuerza * resistencia
 	
 	method recibeDanio(danio) {
-		if (danio < resistencia) resistencia - danio
+		if (danio < resistencia) resistencia -= danio
 		else {
 			estaVivo = false
 			resistencia = 0
@@ -15,17 +18,7 @@ class Persona {
 	}
 	
 	method tomarPocion (pocion) {
-		if (pocion.tieneDulceDeLeche() and !estaVivo) {
-			estaVivo = true
-			resistencia = 2
-		}
-		
-		if ( pocion.tieneMuerdago() and pocion.tieneMuchoMuerdago() ){
-			resistencia /= 2
-		}
-		
-		fuerza = pocion.fuerzaPocion()
-		resistencia = pocion.resistenciaPocion()
+		pocion.efecto(self)
 	}
 	
 	method atacarA(victima) = victima.recibeDanio(self.poder())

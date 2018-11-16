@@ -1,0 +1,68 @@
+import batallas.*
+import ingredientes.*
+import pociones.*
+
+describe "Tests del ejercicio" {
+	const galo1 = new Persona( bando = "galo" )
+	const galo2 = new Persona( bando = "galo", estaVivo = false)
+	const romano1 = new Persona( bando = "romano" )
+	const romano2 = new Persona( bando = "romano" )
+	const pocionDulceDeLeche = new Pocion( ingredientes = [dulceDeLeche])
+	const pocionMuerdago = new Pocion (ingredientes = [manojoDeMuerdago])
+	const pocionZumo = new Pocion (ingredientes = [zumoDeZanahoria])
+	const pocionCompleta = new Pocion( ingredientes = [dulceDeLeche, manojoDeMuerdago, aceiteDeRoca, zumoDeZanahoria])
+	
+	fixture {
+		zumoDeZanahoria.dosis(10)
+		manojoDeMuerdago.tamanioManojo(10)
+		aceiteDeRoca.dosis(10) 
+	}
+	
+	method completarAtributosDePersonas() {
+		galo1.tomarPocion(pocionDulceDeLeche)
+		galo1.tomarPocion(pocionZumo)
+		galo2.tomarPocion(pocionDulceDeLeche)
+		galo2.tomarPocion(pocionMuerdago)
+		romano1.tomarPocion(pocionZumo)
+		romano2.tomarPocion(pocionZumo)
+	}
+	
+	test "Poder de galo1" {
+		galo1.tomarPocion(pocionDulceDeLeche)
+		assert.equals(10, galo1.poder() )
+		galo1.tomarPocion(pocionZumo)
+		assert.equals(40, galo1.poder() )
+	}
+	
+	test "Poder de galo2 ( esta muerto )" {
+		galo2.tomarPocion(pocionDulceDeLeche)
+		assert.equals(20, galo2.poder() )
+		galo2.tomarPocion(pocionMuerdago)
+		assert.equals(1, galo2.resistencia() )
+		assert.equals(20, galo2.poder() )
+	}
+	
+	test "Poder de romanos" {
+		romano1.tomarPocion(pocionZumo)
+		assert.equals(20, romano1.poder() )
+		romano2.tomarPocion(pocionZumo)
+		assert.equals(20, romano2.poder())
+	}
+	
+	test "galo1 ataca a romano1" {
+		self.completarAtributosDePersonas()
+		galo1.atacarA(romano1)
+		assert.notThat(romano1.estaVivo())
+	}
+	
+	test "romano1 ataca a galo1" {
+		self.completarAtributosDePersonas()
+		galo1.resistencia(21)
+		romano1.atacarA(galo1)
+		assert.equals(1,galo1.resistencia())
+		romano1.atacarA(galo1)
+		assert.notThat(galo1.estaVivo())
+	}
+	
+	
+}

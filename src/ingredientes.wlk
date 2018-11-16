@@ -1,29 +1,20 @@
-object dulceDeLeche {
-	method fuerza() = 10
+class Ingrediente {
+	var property tamanio = 0
+	
+	method fuerza() 
 	
 	method resistencia() = 0
 }
 
-object manojoDeMuerdago {
-	var property tamanioManojo = 0
-	
-	method fuerza() = tamanioManojo
-	
-	method resistencia() = 0
+object dulceDeLeche inherits Ingrediente {
+	override method fuerza() = 10
 }
 
-object aceiteDeRoca {
-	var property dosis = 0 /* en cm3 */
-	
-	method fuerza() = dosis
-	
-	method resistencia() = 0
+//Manojo y aceite son iguales
+class ManojoOAceite inherits Ingrediente {
+	override method fuerza() = tamanio
 }
 
-object zumoDeZanahoria {
-	var property dosis = 0 /* en cm3 */
-	
-	method fuerza() = dosis
-	
-	method resistencia() = 1
+class ZumoDeZanahoria inherits Ingrediente {
+	override method resistencia() = 1
 }
